@@ -13,6 +13,7 @@ h1 {
   margin-bottom: 20px;
   font-size: 2em;
   color: #333;
+  margin-left: 12px;
 }
 
 .game-board {
@@ -45,6 +46,10 @@ h1 {
   margin-top: 10px;
   font-size: 1.2em;
   color: #555;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 #reset {
@@ -57,6 +62,7 @@ h1 {
   border: none;
   border-radius: 5px;
   transition: background-color 0.3s;
+  margin-top: 12px;
 }
 
 #reset:hover {

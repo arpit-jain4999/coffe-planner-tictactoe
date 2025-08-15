@@ -2,7 +2,7 @@ const cells = document.querySelectorAll('.cell');
 const message = document.getElementById('message');
 const resetButton = document.getElementById('reset');
 let board = Array(9).fill(null);
-let currentPlayer = 'S'; // Her turn (S)
+let currentPlayer = 'X'; // Her turn (S)
 
 const winPatterns = [
   [0, 1, 2],
@@ -27,15 +27,15 @@ function checkWinner(board) {
 
 function minimax(board, depth, isMaximizing) {
   let winner = checkWinner(board);
-  if (winner === 'A') return 10 - depth;
-  if (winner === 'S') return depth - 10;
+  if (winner === 'O') return 10 - depth;
+  if (winner === 'X') return depth - 10;
   if (winner === 'draw') return 0;
 
   if (isMaximizing) {
     let bestScore = -Infinity;
     for (let i = 0; i < board.length; i++) {
       if (!board[i]) {
-        board[i] = 'A';
+        board[i] = 'O';
         let score = minimax(board, depth + 1, false);
         board[i] = null;
         bestScore = Math.max(score, bestScore);
@@ -46,7 +46,7 @@ function minimax(board, depth, isMaximizing) {
     let bestScore = Infinity;
     for (let i = 0; i < board.length; i++) {
       if (!board[i]) {
-        board[i] = 'S';
+        board[i] = 'X';
         let score = minimax(board, depth + 1, true);
         board[i] = null;
         bestScore = Math.min(score, bestScore);
@@ -61,7 +61,7 @@ function bestMove() {
   let move;
   for (let i = 0; i < board.length; i++) {
     if (!board[i]) {
-      board[i] = 'A';
+      board[i] = 'O';
       let score = minimax(board, 0, false);
       board[i] = null;
       if (score > bestScore) {
@@ -77,8 +77,8 @@ function makeMove(index) {
   if (!board[index] && !checkWinner(board)) {
     board[index] = currentPlayer;
     updateBoard();
-    if (currentPlayer === 'S') {
-      currentPlayer = 'A';
+    if (currentPlayer === 'X') {
+      currentPlayer = 'O';
 
       // Disable cells and date picker during computer's turn
       cells.forEach(cell => cell.style.pointerEvents = 'none');
@@ -87,9 +87,9 @@ function makeMove(index) {
       setTimeout(() => {
         let move = bestMove();
         if (move !== undefined) {
-          board[move] = 'A';
+          board[move] = 'O';
         }
-        currentPlayer = 'S';
+        currentPlayer = 'X';
         updateBoard();
 
         let winner = checkWinner(board);
@@ -114,9 +114,9 @@ function updateBoard() {
 }
 
 function endGame(winner) {
-  if (winner === 'S') {
+  if (winner === 'X') {
     message.textContent = "You won! I guess I'll leave you alone. 😅";
-  } else if (winner === 'A') {
+  } else if (winner === 'O') {
     // Add date picker for selecting the coffee date
     // Add date picker for selecting the coffee date
 const datePicker = document.createElement('input');
@@ -134,7 +134,7 @@ const button = document.createElement('button');
 button.textContent = 'Send WhatsApp Message';
 button.style.marginTop = '10px';
 
-message.textContent = "I win! Let’s make it official ☕. Choose a date for coffee:";
+message.textContent = "I win! As a prize you get a coffee with me ☕. Choose a date for same:";
 message.appendChild(datePicker);
 message.appendChild(button);
 
@@ -142,10 +142,10 @@ button.addEventListener('click', () => {
   const selectedDate = datePicker.value;
   if (selectedDate) {
     const formattedDate = new Date(selectedDate).toLocaleDateString();
-    const whatsappMessage = encodeURIComponent(`I admit it! I couldn't win 😅. Let's go for coffee on ${formattedDate}.`);
+    const whatsappMessage = encodeURIComponent(`I admit it! I couldn't win 😅. Let's go on ${formattedDate}.`);
     window.open(`https://wa.me/919910176391?text=${whatsappMessage}`, '_blank');
   } else {
-    alert('Please select a date for coffee!');
+    alert('Please select a date!');
   }
 });
 
@@ -164,7 +164,7 @@ cells.forEach(cell => cell.addEventListener('click', handleClick));
 
 resetButton.addEventListener('click', () => {
   board.fill(null);
-  currentPlayer = 'S';
+  currentPlayer = 'X';
   updateBoard();
   message.textContent = '';
   cells.forEach(cell => cell.addEventListener('click', handleClick));
